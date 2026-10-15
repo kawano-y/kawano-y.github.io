@@ -1,0 +1,114 @@
+<!DOCTYPE html>
+<html lang="ja">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>kawano-y | ITエンジニア</title>
+  <meta name="description" content="ITエンジニア kawano-y のホームページです。">
+  <style>
+    /* ===== 色や基本設定（ここを変えると全体の雰囲気が変わる） ===== */
+    :root {
+      --bg: #ffffff;
+      --text: #1f2933;
+      --muted: #6b7280;
+      --accent: #2563eb;
+      --border: #e5e7eb;
+    }
+
+    * { box-sizing: border-box; }
+
+    body {
+      margin: 0;
+      font-family: "Hiragino Sans", "Noto Sans JP", sans-serif;
+      background: var(--bg);
+      color: var(--text);
+      line-height: 1.8;
+    }
+
+    /* 中身の横幅を制限して中央寄せ */
+    .container {
+      max-width: 720px;
+      margin: 0 auto;
+      padding: 0 16px;
+    }
+
+    header {
+      padding: 80px 0 48px;
+      border-bottom: 1px solid var(--border);
+    }
+
+    h1 { margin: 0; font-size: 2rem; }
+    .role { margin: 4px 0 0; color: var(--muted); }
+
+    section { padding: 40px 0; border-bottom: 1px solid var(--border); }
+    h2 { font-size: 1.25rem; margin: 0 0 16px; }
+
+    ul { padding-left: 1.2em; margin: 0; }
+
+    a { color: var(--accent); }
+
+    .button {
+      display: inline-block;
+      padding: 10px 20px;
+      background: var(--accent);
+      color: #fff;
+      text-decoration: none;
+      border-radius: 6px;
+    }
+
+    footer {
+      padding: 32px 0;
+      color: var(--muted);
+      font-size: 0.875rem;
+    }
+  </style>
+</head>
+<body>
+
+  <header>
+    <div class="container">
+      <h1>kawano-y</h1>
+      <p class="role">ITエンジニア / Webアプリケーション開発</p>
+    </div>
+  </header>
+
+  <main class="container">
+
+    <section id="about">
+      <h2>About</h2>
+      <p>Webアプリケーションの開発をしています。ここに自己紹介を書きます。</p>
+    </section>
+
+    <section id="skills">
+      <h2>Skills</h2>
+      <ul>
+        <li>言語：（例）PHP / JavaScript</li>
+        <li>フレームワーク：（例）Laravel</li>
+        <li>データベース：（例）MySQL</li>
+      </ul>
+    </section>
+
+    <section id="works">
+      <h2>Works</h2>
+      <ul>
+        <li><a href="https://github.com/kawano-y/junkbox">junkbox</a> — 作ったものの置き場</li>
+      </ul>
+    </section>
+
+    <section id="contact">
+      <h2>Contact</h2>
+      <p>お仕事のご相談はこちらからどうぞ。</p>
+      <!-- フォームのURLが決まったら href を差し替える -->
+      <a class="button" href="#">お問い合わせ</a>
+    </section>
+
+  </main>
+
+  <footer>
+    <div class="container">
+      &copy; 2026 kawano-y
+    </div>
+  </footer>
+
+</body>
+</html>
