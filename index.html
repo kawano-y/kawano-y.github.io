@@ -3,8 +3,8 @@
 <head>
   <meta charset="UTF-8">
   <meta name="viewport" content="width=device-width, initial-scale=1.0">
-  <title>川野　允也 | ITエンジニア</title>
-  <meta name="description" content="ITエンジニア 川野　允也 のホームページです。Java / Spring Boot / React を使った Webアプリケーション開発を、フロントからバックエンド、インフラまで対応します。">
+  <title>川野允也 | ITエンジニア</title>
+  <meta name="description" content="ITエンジニア 川野允也 のホームページです。Java / Spring Boot / React を使った Webアプリケーション開発を、フロントからバックエンド、インフラまで対応します。">
   <!-- 正式な URL を検索エンジンに伝える。?v=1 などが付いた URL も同じページとして扱ってもらうため -->
   <link rel="canonical" href="https://kawano-y.github.io/">
   <!-- Google Search Console の所有者確認用（秘密情報ではない。消すと確認が外れるので残しておく） -->
@@ -13,12 +13,27 @@
   <!-- OGP：SNS などに URL を貼ったとき、カード表示に使われる情報。画像は絶対URLで書く必要がある -->
   <meta property="og:type" content="website">
   <meta property="og:url" content="https://kawano-y.github.io/">
-  <meta property="og:title" content="川野　允也 | ITエンジニア">
+  <meta property="og:title" content="川野允也 | ITエンジニア">
   <meta property="og:description" content="Java / Spring Boot / React を使った Webアプリケーション開発。フロントからバックエンド、インフラまで対応します。">
   <meta property="og:image" content="https://kawano-y.github.io/ogp.png">
   <meta property="og:locale" content="ja_JP">
   <!-- X 用：画像を大きく表示するカードにする -->
   <meta name="twitter:card" content="summary_large_image">
+
+  <!-- 構造化データ（JSON-LD）：「このページは誰のものか」を検索エンジン向けに書いたもの。画面には表示されない。
+       alternateName はスペースありの表記、sameAs は同じ人の別サイトのプロフィール -->
+  <script type="application/ld+json">
+  {
+    "@context": "https://schema.org",
+    "@type": "Person",
+    "name": "川野允也",
+    "alternateName": ["川野 允也"],
+    "jobTitle": "ITエンジニア",
+    "url": "https://kawano-y.github.io/",
+    "knowsAbout": ["Java", "Spring Boot", "TypeScript", "React", "Webアプリケーション開発"],
+    "sameAs": ["https://github.com/kawano-y"]
+  }
+  </script>
 
   <!-- Google アナリティクス（GA4）：訪問者数や流入元を計測する。Google 提供のコードをそのまま貼っている。
        async なのでページの表示を待たせない -->
@@ -62,7 +77,8 @@
       border-bottom: 1px solid var(--border);
     }
 
-    h1 { margin: 0; font-size: 2rem; }
+    /* 名前はスペースなしで書いている（検索で見つけてもらいやすくするため）。字間を少し空けて読みやすくする */
+    h1 { margin: 0; font-size: 2rem; letter-spacing: 0.08em; }
     .role { margin: 4px 0 0; color: var(--muted); }
 
     section { padding: 40px 0; border-bottom: 1px solid var(--border); }
@@ -109,7 +125,7 @@
 
   <header>
     <div class="container">
-      <h1>川野　允也</h1>
+      <h1>川野允也</h1>
       <p class="role">ITエンジニア / Webアプリケーション開発</p>
     </div>
   </header>
