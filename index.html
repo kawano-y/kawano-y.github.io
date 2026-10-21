@@ -19,6 +19,17 @@
   <meta property="og:locale" content="ja_JP">
   <!-- X 用：画像を大きく表示するカードにする -->
   <meta name="twitter:card" content="summary_large_image">
+
+  <!-- Google アナリティクス（GA4）：訪問者数や流入元を計測する。Google 提供のコードをそのまま貼っている。
+       async なのでページの表示を待たせない -->
+  <script async src="https://www.googletagmanager.com/gtag/js?id=G-94B091L55W"></script>
+  <script>
+    window.dataLayer = window.dataLayer || [];
+    function gtag(){dataLayer.push(arguments);}
+    gtag('js', new Date());
+    gtag('config', 'G-94B091L55W');
+  </script>
+
   <style>
     /* ===== 色や基本設定（ここを変えると全体の雰囲気が変わる） ===== */
     :root {
@@ -89,6 +100,9 @@
       color: var(--muted);
       font-size: 0.875rem;
     }
+
+    /* アクセス解析のお知らせ。コピーライトより一段小さくして目立たせない */
+    .analytics-note { margin: 8px 0 0; font-size: 0.75rem; }
   </style>
 </head>
 <body>
@@ -153,6 +167,8 @@
   <footer>
     <div class="container">
       &copy; 2026 kawano-y
+      <!-- Google アナリティクスの利用規約で、使っていることをサイト上に書く必要がある -->
+      <p class="analytics-note">このサイトではアクセス解析に Google アナリティクスを使用しています。データの収集に Cookie を利用していますが、個人を特定する情報は収集していません。</p>
     </div>
   </footer>
 
