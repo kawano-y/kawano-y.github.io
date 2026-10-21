@@ -119,6 +119,43 @@
 
     /* アクセス解析のお知らせ。コピーライトより一段小さくして目立たせない */
     .analytics-note { margin: 8px 0 0; font-size: 0.75rem; }
+
+    /* ===== ヘッダーのターミナル風の自己紹介 ===== */
+    /* 白いページの中で目を引くよう、ここだけ黒背景にする */
+    .terminal {
+      margin-top: 32px;
+      background: #111827;
+      border-radius: 8px;
+      overflow: hidden;
+      box-shadow: 0 8px 24px rgba(0, 0, 0, 0.12);
+    }
+    /* 上部の「●●●」はウィンドウっぽく見せるための飾り */
+    .terminal-bar { display: flex; gap: 6px; padding: 10px 12px; background: #1f2937; }
+    .terminal-bar span { width: 10px; height: 10px; border-radius: 50%; background: #4b5563; }
+    .terminal-body {
+      padding: 14px 16px 16px;
+      color: #e5e7eb;
+      font-family: Consolas, Menlo, monospace, sans-serif;
+      font-size: 0.875rem;
+      line-height: 1.7;
+    }
+    .terminal-body p { margin: 0; }
+    .terminal-body .out { color: #9ca3af; margin-bottom: 6px; }
+    .terminal-body .ok { color: #6ee7b7; }
+    .prompt { color: #60a5fa; user-select: none; }
+    /* まだ打っていない行。visibility: hidden は「見えないが場所は取る」ので、行が出るたびに下の内容がずれない */
+    .terminal-body .pending { visibility: hidden; }
+    /* 入力中と最後の行に出すカーソル */
+    .typing::after, .cursor::after { content: "▋"; color: #9ca3af; }
+    .cursor::after { animation: blink 1s steps(1) infinite; }
+    @keyframes blink { 50% { opacity: 0; } }
+    /* 「動きを減らす」設定の人には点滅させない */
+    @media (prefers-reduced-motion: reduce) {
+      .cursor::after { animation: none; }
+    }
+    @media (max-width: 480px) {
+      .terminal-body { font-size: 0.8125rem; padding: 12px; }
+    }
   </style>
 </head>
 <body>
@@ -127,6 +164,22 @@
     <div class="container">
       <h1>川野允也</h1>
       <p class="role">ITエンジニア / Webアプリケーション開発</p>
+
+      <!-- ターミナル風の自己紹介。中身は下の各セクションと同じなので、読み上げソフトには読ませない（aria-hidden） -->
+      <div class="terminal" aria-hidden="true">
+        <div class="terminal-bar"><span></span><span></span><span></span></div>
+        <div class="terminal-body" id="terminal">
+          <p><span class="prompt">$ </span><span class="cmd">whoami</span></p>
+          <p class="out">川野允也 / Webアプリケーションエンジニア</p>
+          <p><span class="prompt">$ </span><span class="cmd">cat skills.txt</span></p>
+          <p class="out">Java / Spring Boot / TypeScript / React / MySQL</p>
+          <p><span class="prompt">$ </span><span class="cmd">ls works/</span></p>
+          <p class="out">demo-bank/  yoken/  junkbox/</p>
+          <p><span class="prompt">$ </span><span class="cmd">echo $STATUS</span></p>
+          <p class="out ok">お仕事のご相談、受付中です</p>
+          <p><span class="prompt">$ </span><span class="cursor"></span></p>
+        </div>
+      </div>
     </div>
   </header>
 
@@ -187,6 +240,49 @@
       <p class="analytics-note">このサイトではアクセス解析に Google アナリティクスを使用しています。データの収集に Cookie を利用していますが、個人を特定する情報は収集していません。</p>
     </div>
   </footer>
+
+  <script>
+    // ターミナルのコマンドを1文字ずつ打つ演出。
+    // HTML には全文を書いておき、ここで一度隠してから順に出す。
+    // JavaScript が動かない環境や「動きを減らす」設定の人には、最初から全文がそのまま表示される。
+    (function () {
+      var term = document.getElementById('terminal');
+      if (!term || window.matchMedia('(prefers-reduced-motion: reduce)').matches) return;
+
+      var rows = Array.prototype.slice.call(term.children);
+      var texts = rows.map(function (row) {
+        var cmd = row.querySelector('.cmd');
+        return cmd ? cmd.textContent : null;
+      });
+      rows.forEach(function (row, i) {
+        row.classList.add('pending');
+        if (texts[i] !== null) row.querySelector('.cmd').textContent = '';
+      });
+
+      var i = 0;
+      function next() {
+        if (i >= rows.length) return;
+        var row = rows[i];
+        var text = texts[i];
+        row.classList.remove('pending');
+        i++;
+        // コマンドではない行（結果の表示）はすぐ出す
+        if (text === null) { setTimeout(next, 250); return; }
+
+        var cmd = row.querySelector('.cmd');
+        var n = 0;
+        cmd.classList.add('typing');
+        (function type() {
+          n++;
+          cmd.textContent = text.slice(0, n);
+          if (n < text.length) { setTimeout(type, 70); return; }
+          cmd.classList.remove('typing');
+          setTimeout(next, 350);
+        })();
+      }
+      setTimeout(next, 600);
+    })();
+  </script>
 
 </body>
 </html>
