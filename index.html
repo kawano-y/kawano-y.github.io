@@ -49,13 +49,19 @@
     /* ===== 色や基本設定（ここを変えると全体の雰囲気が変わる） ===== */
     :root {
       --bg: #ffffff;
+      --bg-soft: #f8fafc;       /* セクションの背景やカード内の補足に使う、ごく薄いグレー */
       --text: #1f2933;
       --muted: #6b7280;
       --accent: #2563eb;
+      --accent-soft: #eff6ff;   /* タグなどに使う、ごく薄い青 */
       --border: #e5e7eb;
+      --radius: 12px;
     }
 
     * { box-sizing: border-box; }
+
+    /* ナビのリンクを押したとき、ページ内をなめらかにスクロールさせる */
+    html { scroll-behavior: smooth; }
 
     body {
       margin: 0;
@@ -67,52 +73,142 @@
 
     /* 中身の横幅を制限して中央寄せ */
     .container {
-      max-width: 720px;
+      max-width: 800px;
       margin: 0 auto;
       padding: 0 16px;
     }
 
-    header {
-      padding: 80px 0 48px;
+    a { color: var(--accent); }
+
+    /* ===== 上部のナビゲーション ===== */
+    /* position: sticky でスクロールしても画面上部に残る。背景を少し透かして、下の内容がうっすら見えるようにしている */
+    .site-nav {
+      position: sticky;
+      top: 0;
+      z-index: 10;
+      background: rgba(255, 255, 255, 0.85);
+      backdrop-filter: blur(8px);
       border-bottom: 1px solid var(--border);
+    }
+    .site-nav .container {
+      display: flex;
+      align-items: center;
+      justify-content: space-between;
+      height: 56px;
+    }
+    .site-nav .logo { font-weight: 700; color: var(--text); text-decoration: none; letter-spacing: 0.08em; }
+    .site-nav ul { display: flex; gap: 20px; list-style: none; margin: 0; padding: 0; }
+    .site-nav ul a { color: var(--muted); text-decoration: none; font-size: 0.875rem; }
+    .site-nav ul a:hover { color: var(--accent); }
+
+    /* ===== ヘッダー ===== */
+    /* 上から下へ、薄いグレー → 白 に変わる背景で、ページの入口だけほんのり色を付ける */
+    header {
+      padding: 72px 0 64px;
+      background: linear-gradient(180deg, var(--bg-soft) 0%, var(--bg) 100%);
     }
 
     /* 名前はスペースなしで書いている（検索で見つけてもらいやすくするため）。字間を少し空けて読みやすくする */
-    h1 { margin: 0; font-size: 2rem; letter-spacing: 0.08em; }
-    .role { margin: 4px 0 0; color: var(--muted); }
+    h1 { margin: 0; font-size: 2.25rem; letter-spacing: 0.08em; line-height: 1.4; }
+    .role { margin: 8px 0 0; color: var(--muted); }
 
-    section { padding: 40px 0; border-bottom: 1px solid var(--border); }
-    h2 { font-size: 1.25rem; margin: 0 0 16px; }
+    /* ===== 各セクション ===== */
+    /* 区切り線をやめて、余白で区切る。線が多いと事務的に見えるため */
+    /* scroll-margin-top：ナビから飛んだとき、固定ナビ（高さ56px）の裏に見出しが隠れないよう少し手前で止める */
+    section { padding: 64px 0; scroll-margin-top: 40px; }
 
-    ul { padding-left: 1.2em; margin: 0; }
+    /* 見出しの上に小さな英字ラベル、その下に日本語の見出しを置く2段構成 */
+    .eyebrow {
+      margin: 0;
+      color: var(--accent);
+      font-size: 0.75rem;
+      font-weight: 700;
+      letter-spacing: 0.2em;
+      text-transform: uppercase;
+    }
+    h2 { font-size: 1.5rem; margin: 4px 0 24px; line-height: 1.5; }
+    h3 { font-size: 1.125rem; margin: 0; line-height: 1.5; }
 
-    a { color: var(--accent); }
+    /* ===== カード（Skills / Works / Contact で共通の枠） ===== */
+    .card {
+      background: var(--bg);
+      border: 1px solid var(--border);
+      border-radius: var(--radius);
+      padding: 24px;
+    }
 
-    /* Works の各項目の間に余白を入れる */
-    #works li + li { margin-top: 24px; }
-    #works p { margin: 4px 0 0; }
+    /* ===== Skills ===== */
+    /* grid で横に並べる。auto-fit + minmax で、画面が狭いと自動で1列に折り返す */
+    .skill-grid {
+      display: grid;
+      grid-template-columns: repeat(auto-fit, minmax(220px, 1fr));
+      gap: 16px;
+    }
+    .skill-grid h3 { font-size: 0.875rem; color: var(--muted); margin-bottom: 12px; }
 
-    /* 補足情報（ログイン情報など）は小さめ・薄めの文字にして本文と区別する */
-    .note { color: var(--muted); font-size: 0.875rem; }
+    /* 技術名などの小さなタグ。ul を横並びにして、各 li を角丸の札にする */
+    .tags { display: flex; flex-wrap: wrap; gap: 8px; list-style: none; margin: 0; padding: 0; }
+    .tags li {
+      padding: 2px 12px;
+      background: var(--accent-soft);
+      color: var(--accent);
+      border-radius: 999px;
+      font-size: 0.8125rem;
+      line-height: 1.8;
+    }
+
+    /* ===== Works ===== */
+    .works { display: grid; gap: 20px; }
+    /* マウスを乗せると少し浮き上がる。transition で変化をなめらかにする */
+    .work { transition: box-shadow 0.2s, transform 0.2s; }
+    .work:hover { box-shadow: 0 12px 32px rgba(15, 23, 42, 0.08); transform: translateY(-2px); }
+    .work .summary { margin: 12px 0 16px; }
+    .work .tags { margin-bottom: 16px; }
+
+    /* ログイン情報などの補足は、薄いグレーの箱に入れて本文と区別する */
+    .note {
+      margin: 0 0 20px;
+      padding: 12px 16px;
+      background: var(--bg-soft);
+      border-radius: 8px;
+      color: var(--muted);
+      font-size: 0.8125rem;
+    }
 
     code {
       padding: 1px 6px;
-      background: #f3f4f6;
+      background: #eef0f3;
       border-radius: 4px;
       font-size: 0.875em;
     }
 
+    /* 小さめの作品は1行だけのカードにする */
+    .work-mini { display: flex; flex-wrap: wrap; align-items: baseline; gap: 4px 12px; }
+    .work-mini p { margin: 0; color: var(--muted); }
+
+    /* ===== ボタン ===== */
     .button {
       display: inline-block;
-      padding: 10px 20px;
+      padding: 10px 24px;
       background: var(--accent);
       color: #fff;
       text-decoration: none;
-      border-radius: 6px;
+      border-radius: 8px;
+      font-weight: 700;
+      transition: background 0.2s;
     }
+    .button:hover { background: #1d4ed8; }
+    /* 枠線だけのボタン（Works の「デモを見る」用）。メインのボタンより控えめにする */
+    .button-outline { background: transparent; color: var(--accent); border: 1px solid var(--accent); padding: 8px 20px; font-size: 0.875rem; }
+    .button-outline:hover { background: var(--accent-soft); }
+
+    /* ===== Contact ===== */
+    .contact { text-align: center; background: var(--bg-soft); border: none; padding: 48px 24px; }
+    .contact p { margin: 0 0 24px; }
 
     footer {
-      padding: 32px 0;
+      padding: 32px 0 40px;
+      border-top: 1px solid var(--border);
       color: var(--muted);
       font-size: 0.875rem;
     }
@@ -125,9 +221,9 @@
     .terminal {
       margin-top: 32px;
       background: #111827;
-      border-radius: 8px;
+      border-radius: var(--radius);
       overflow: hidden;
-      box-shadow: 0 8px 24px rgba(0, 0, 0, 0.12);
+      box-shadow: 0 12px 32px rgba(15, 23, 42, 0.15);
     }
     /* 上部の「●●●」はウィンドウっぽく見せるための飾り */
     .terminal-bar { display: flex; gap: 6px; padding: 10px 12px; background: #1f2937; }
@@ -149,16 +245,40 @@
     .typing::after, .cursor::after { content: "▋"; color: #9ca3af; }
     .cursor::after { animation: blink 1s steps(1) infinite; }
     @keyframes blink { 50% { opacity: 0; } }
-    /* 「動きを減らす」設定の人には点滅させない */
+    /* 「動きを減らす」設定の人には点滅や浮き上がりをさせない */
     @media (prefers-reduced-motion: reduce) {
+      html { scroll-behavior: auto; }
       .cursor::after { animation: none; }
+      .work:hover { transform: none; }
     }
+
+    /* ===== スマホ幅での調整 ===== */
     @media (max-width: 480px) {
+      .site-nav .logo { font-size: 0.875rem; }
+      .site-nav ul { gap: 12px; }
+      .site-nav ul a { font-size: 0.75rem; }
+      header { padding: 48px 0 40px; }
+      h1 { font-size: 1.75rem; }
+      section { padding: 48px 0; }
+      .card { padding: 20px; }
       .terminal-body { font-size: 0.8125rem; padding: 12px; }
     }
   </style>
 </head>
 <body>
+
+  <!-- 上部に固定されるナビ。href="#about" のように書くと、その id を持つセクションへ移動する -->
+  <nav class="site-nav">
+    <div class="container">
+      <a class="logo" href="#">川野允也</a>
+      <ul>
+        <li><a href="#about">About</a></li>
+        <li><a href="#skills">Skills</a></li>
+        <li><a href="#works">Works</a></li>
+        <li><a href="#contact">Contact</a></li>
+      </ul>
+    </div>
+  </nav>
 
   <header>
     <div class="container">
@@ -186,49 +306,68 @@
   <main class="container">
 
     <section id="about">
-      <h2>About</h2>
+      <p class="eyebrow">About</p>
+      <h2>自己紹介</h2>
       <p>Webアプリケーションの開発をしています。フロントからバックエンド、インフラまで対応します。</p>
     </section>
 
     <section id="skills">
-      <h2>Skills</h2>
-      <ul>
-        <li>言語： Java / TypeScript / Python / JavaScript</li>
-        <li>フレームワーク： Spring Boot / React</li>
-        <li>データベース：MySQL</li>
-      </ul>
+      <p class="eyebrow">Skills</p>
+      <h2>できること</h2>
+      <div class="skill-grid">
+        <div class="card">
+          <h3>言語</h3>
+          <ul class="tags"><li>Java</li><li>TypeScript</li><li>Python</li><li>JavaScript</li></ul>
+        </div>
+        <div class="card">
+          <h3>フレームワーク</h3>
+          <ul class="tags"><li>Spring Boot</li><li>React</li></ul>
+        </div>
+        <div class="card">
+          <h3>データベース</h3>
+          <ul class="tags"><li>MySQL</li></ul>
+        </div>
+      </div>
     </section>
 
     <section id="works">
-      <h2>Works</h2>
-      <ul>
-        <li>
-          <a href="https://main.d1kj6pd4xj5uln.amplifyapp.com/">デモ銀行（学習用ネットバンキング）</a>
+      <p class="eyebrow">Works</p>
+      <h2>制作物</h2>
+      <div class="works">
+
+        <article class="card work">
+          <h3>デモ銀行（学習用ネットバンキング）</h3>
           <!-- 日本語は HTML 内で改行すると表示上に空白が入るため、段落は1行で書く -->
-          <p>入金・振込・承認・取消といった金融システムの業務の流れを体験できるデモです。操作するたびに「チェック → 更新 → 記録」の処理ステップと、変更されたデータの行を画面上に表示します。承認権限・ダブルチェック・障害時の不整合と残高照合など、業務システムで大事になる部分を再現しました。</p>
-          <p class="note">
-            デモ用ログイン：ID <code>demo</code> / パスワード <code>password</code><br>
-            データはお使いのブラウザ内にのみ保存され、画面下部の「データ初期化」でいつでも元に戻せます。<br>
-            使用技術：Next.js / TypeScript / Tailwind CSS / AWS Amplify
-          </p>
-        </li>
-        <li>
-          <a href="https://yoken-d5272.web.app/">用件（予定の打診アプリ）</a>
-          <p>要件と日にちだけを送り、返事は「はい / いいえ」だけで答える、スマホ向けのやりとりアプリです。返事を変えるときだけ一言（50文字まで）の理由が必要になる仕組みで、気軽さと「ドタキャンしにくさ」の両立を狙いました。</p>
-          <p class="note">
-            ご利用には Google アカウントでのログインが必要です。<br>
-            使用技術：React (Vite) / TypeScript / Firebase（Hosting / Firestore / Authentication / Cloud Functions）
-          </p>
-        </li>
-        <li><a href="https://github.com/kawano-y/junkbox">junkbox</a> — 作ったものの置き場</li>
-      </ul>
+          <p class="summary">入金・振込・承認・取消といった金融システムの業務の流れを体験できるデモです。操作するたびに「チェック → 更新 → 記録」の処理ステップと、変更されたデータの行を画面上に表示します。承認権限・ダブルチェック・障害時の不整合と残高照合など、業務システムで大事になる部分を再現しました。</p>
+          <ul class="tags"><li>Next.js</li><li>TypeScript</li><li>Tailwind CSS</li><li>AWS Amplify</li></ul>
+          <p class="note">デモ用ログイン：ID <code>demo</code> / パスワード <code>password</code><br>データはお使いのブラウザ内にのみ保存され、画面下部の「データ初期化」でいつでも元に戻せます。</p>
+          <a class="button button-outline" href="https://main.d1kj6pd4xj5uln.amplifyapp.com/">デモを見る →</a>
+        </article>
+
+        <article class="card work">
+          <h3>用件（予定の打診アプリ）</h3>
+          <p class="summary">要件と日にちだけを送り、返事は「はい / いいえ」だけで答える、スマホ向けのやりとりアプリです。返事を変えるときだけ一言（50文字まで）の理由が必要になる仕組みで、気軽さと「ドタキャンしにくさ」の両立を狙いました。</p>
+          <ul class="tags"><li>React (Vite)</li><li>TypeScript</li><li>Firebase Hosting</li><li>Firestore</li><li>Firebase Authentication</li><li>Cloud Functions</li></ul>
+          <p class="note">ご利用には Google アカウントでのログインが必要です。</p>
+          <a class="button button-outline" href="https://yoken-d5272.web.app/">アプリを見る →</a>
+        </article>
+
+        <article class="card work-mini">
+          <h3><a href="https://github.com/kawano-y/junkbox">junkbox</a></h3>
+          <p>作ったものの置き場（GitHub）</p>
+        </article>
+
+      </div>
     </section>
 
     <section id="contact">
-      <h2>Contact</h2>
-      <p>お仕事のご相談はこちらからどうぞ。</p>
-      <!-- Googleフォームを別タブで開く（rel="noopener" は開いた先のページからこのページを操作させないため） -->
-      <a class="button" href="https://docs.google.com/forms/d/e/1FAIpQLScgDDnqeKgGH-JfmgzvMHn5GBW7vWlPsazjUmYFrn59HrRJww/viewform" target="_blank" rel="noopener">お問い合わせ</a>
+      <p class="eyebrow">Contact</p>
+      <h2>お問い合わせ</h2>
+      <div class="card contact">
+        <p>お仕事のご相談はこちらからどうぞ。</p>
+        <!-- Googleフォームを別タブで開く（rel="noopener" は開いた先のページからこのページを操作させないため） -->
+        <a class="button" href="https://docs.google.com/forms/d/e/1FAIpQLScgDDnqeKgGH-JfmgzvMHn5GBW7vWlPsazjUmYFrn59HrRJww/viewform" target="_blank" rel="noopener">お問い合わせフォームを開く</a>
+      </div>
     </section>
 
   </main>
