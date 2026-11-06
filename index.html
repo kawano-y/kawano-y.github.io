@@ -182,6 +182,27 @@
       font-size: 0.875em;
     }
 
+    /* 売り出し中のサービスは、青い枠で他の作品より一段目立たせる */
+    .work-featured { border-color: var(--accent); }
+    /* 提供状況の札。inline-block にすると、札の幅が文字の長さに合う */
+    .badge {
+      display: inline-block;
+      margin-bottom: 8px;
+      padding: 2px 12px;
+      background: var(--accent);
+      color: #fff;
+      border-radius: 999px;
+      font-size: 0.75rem;
+      font-weight: 700;
+    }
+    /* ひとことで価値を伝える行。本文より太くして、最初に目に入るようにする */
+    .catch { margin: 8px 0 0; font-weight: 700; color: var(--accent); }
+    /* 特長の一覧。項目名を太字にして、流し読みでも内容が拾えるようにする */
+    .points { margin: 0 0 16px; padding-left: 1.25em; }
+    .points li { margin-bottom: 4px; }
+    /* ボタンを横に並べる。flex-wrap で、幅が足りないスマホでは自動で2段になる */
+    .work-actions { display: flex; flex-wrap: wrap; align-items: center; gap: 12px; }
+
     /* 小さめの作品は1行だけのカードにする */
     .work-mini { display: flex; flex-wrap: wrap; align-items: baseline; gap: 4px 12px; }
     .work-mini p { margin: 0; color: var(--muted); }
@@ -294,7 +315,7 @@
           <p><span class="prompt">$ </span><span class="cmd">cat skills.txt</span></p>
           <p class="out">Java / Spring Boot / TypeScript / React / MySQL</p>
           <p><span class="prompt">$ </span><span class="cmd">ls works/</span></p>
-          <p class="out">demo-bank/  yoken/  junkbox/</p>
+          <p class="out">madoguchi/  demo-bank/  yoken/  junkbox/</p>
           <p><span class="prompt">$ </span><span class="cmd">echo $STATUS</span></p>
           <p class="out ok">お仕事のご相談、受付中です</p>
           <p><span class="prompt">$ </span><span class="cursor"></span></p>
@@ -335,6 +356,26 @@
       <p class="eyebrow">Works</p>
       <h2>制作物</h2>
       <div class="works">
+
+        <article class="card work work-featured">
+          <span class="badge">提供準備中・導入のご相談受付中</span>
+          <h3>マドグチ（AI受付・案内サービス）</h3>
+          <p class="catch">同じ質問への対応は AI に。スタッフは、目の前のお客さまに。</p>
+          <p class="summary">「受付時間は？」「駐車場はありますか？」といった毎日くり返される質問に、AI が音声と文字で答える受付・案内サービスです。スマホやタブレットのブラウザで開くだけで使えて、アプリのインストールは要りません。受付に人手を割きにくい、小規模な店舗・事務所・施設に向けて作っています。</p>
+          <ul class="points">
+            <li><strong>案内の内容はお店ごとに設定</strong>：営業時間や場所などの情報をもとに、そのお店の案内係として答えます。</li>
+            <li><strong>困ったらスタッフへ引き継ぎ</strong>：AI が答えられないときは、Slack などのチャットやメールでスタッフを呼び出します。</li>
+            <li><strong>誰でも使いやすく</strong>：声で話すのが苦手な方は文字入力やよくある質問ボタンで、お子さまにはやさしい言葉のモードで案内します。</li>
+            <li><strong>安心して任せられる設計</strong>：AI には公開してよい案内情報だけを渡し、個人情報や決済は扱わせません。予約の確定や割引の約束もしません。</li>
+          </ul>
+          <ul class="tags"><li>React</li><li>TypeScript</li><li>Node.js (Hono)</li><li>Claude API</li><li>AWS Lambda</li><li>DynamoDB</li><li>CloudFormation</li></ul>
+          <p class="note">企画から設計・開発・AWS 環境の構築まで、個人で手がけている自社サービスです。不正な指示を防ぐ入出力チェック、お店ごとのデータ分離、AI の利用量の上限管理など、商用で使うために必要な部分まで作り込んでいます。社内問い合わせの自動応答など、AI を組み込んだシステムの開発もご相談いただけます。</p>
+          <p class="note">お試し版は、架空のクリニック「サンプル内科クリニック」の受付です。「土曜日はやっていますか？」のように話しかけてみてください。<br>会話の内容は記録されるため、個人情報は入力しないでください。月の利用回数に上限があり、上限に達すると AI の回答が止まります。</p>
+          <div class="work-actions">
+            <a class="button" href="https://qzd6svh35aqyqieevivgunbpvy0rogjk.lambda-url.ap-northeast-1.on.aws/?store=demo-clinic">お試し版を見る →</a>
+            <a class="button button-outline" href="#contact">導入のご相談はこちら →</a>
+          </div>
+        </article>
 
         <article class="card work">
           <h3>デモ銀行（学習用ネットバンキング）</h3>
