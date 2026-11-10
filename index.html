@@ -3,8 +3,14 @@
 <head>
   <meta charset="UTF-8">
   <meta name="viewport" content="width=device-width, initial-scale=1.0">
-  <title>川野允也 | Webシステム開発</title>
-  <meta name="description" content="ITエンジニア 川野允也 のホームページです。業務システムやWebサービスの開発を、ご相談・要件整理から設計・開発・公開後の運用まで請け負います。">
+  <!-- title と description は検索結果にそのまま出る文章。何ができる人か・何を頼めるかを先頭のほうに書く
+       （検索結果では後ろが省略されやすいため。description は 120 文字前後に収める） -->
+  <title>川野允也 | 業務システム・Webサービス・AI活用の開発</title>
+  <meta name="description" content="ITエンジニア 川野允也のサイトです。Excel や紙で回している業務のシステム化、Webサービス、AI を使った受付・問い合わせ対応などの開発を、ご相談・要件整理から設計・開発・AWS での公開・運用まで一人で一貫して請け負います。">
+  <!-- スマホのブラウザで、アドレスバーなどの色をサイトのアクセント色に合わせる -->
+  <meta name="theme-color" content="#2563eb">
+  <!-- ブラウザのタブや Google の検索結果に出る小さなアイコン。SVG なので1ファイルでどの大きさでもくっきり表示される -->
+  <link rel="icon" href="/favicon.svg" type="image/svg+xml">
   <!-- 正式な URL を検索エンジンに伝える。?v=1 などが付いた URL も同じページとして扱ってもらうため -->
   <link rel="canonical" href="https://kawano-y.github.io/">
   <!-- Google Search Console の所有者確認用（秘密情報ではない。消すと確認が外れるので残しておく） -->
@@ -13,25 +19,39 @@
   <!-- OGP：SNS などに URL を貼ったとき、カード表示に使われる情報。画像は絶対URLで書く必要がある -->
   <meta property="og:type" content="website">
   <meta property="og:url" content="https://kawano-y.github.io/">
-  <meta property="og:title" content="川野允也 | Webシステム開発">
-  <meta property="og:description" content="業務システムやWebサービスの開発を、ご相談・要件整理から設計・開発・公開後の運用まで請け負います。">
+  <meta property="og:site_name" content="川野允也">
+  <meta property="og:title" content="川野允也 | 業務システム・Webサービス・AI活用の開発">
+  <meta property="og:description" content="業務のシステム化、Webサービス、AI を使った受付・問い合わせ対応などの開発を、ご相談から設計・開発・公開後の運用まで一人で一貫して請け負います。">
   <meta property="og:image" content="https://kawano-y.github.io/ogp.png">
   <meta property="og:locale" content="ja_JP">
   <!-- X 用：画像を大きく表示するカードにする -->
   <meta name="twitter:card" content="summary_large_image">
 
   <!-- 構造化データ（JSON-LD）：「このページは誰のものか」を検索エンジン向けに書いたもの。画面には表示されない。
-       alternateName はスペースありの表記、sameAs は同じ人の別サイトのプロフィール -->
+       @graph で2つの情報をまとめて書いている。
+       ・WebSite：検索結果の上に出る「サイト名」の候補になる
+       ・Person：この人について。alternateName はスペースありの表記、sameAs は同じ人の別サイトのプロフィール -->
   <script type="application/ld+json">
   {
     "@context": "https://schema.org",
-    "@type": "Person",
-    "name": "川野允也",
-    "alternateName": ["川野 允也"],
-    "jobTitle": "ITエンジニア",
-    "url": "https://kawano-y.github.io/",
-    "knowsAbout": ["Java", "Spring Boot", "TypeScript", "React", "Webアプリケーション開発"],
-    "sameAs": ["https://github.com/kawano-y"]
+    "@graph": [
+      {
+        "@type": "WebSite",
+        "name": "川野允也",
+        "url": "https://kawano-y.github.io/",
+        "inLanguage": "ja"
+      },
+      {
+        "@type": "Person",
+        "name": "川野允也",
+        "alternateName": ["川野 允也"],
+        "jobTitle": "ITエンジニア",
+        "description": "業務システム・Webサービス・AI活用システムの開発を、ご相談から設計・開発・公開後の運用まで請け負うITエンジニア。",
+        "url": "https://kawano-y.github.io/",
+        "knowsAbout": ["Java", "Spring Boot", "TypeScript", "React", "Next.js", "Node.js", "Python", "MySQL", "AWS", "Firebase", "Claude API", "業務システム開発", "Webアプリケーション開発", "生成AI活用"],
+        "sameAs": ["https://github.com/kawano-y"]
+      }
+    ]
   }
   </script>
 
@@ -343,11 +363,19 @@
         </div>
         <div class="card">
           <h3>フレームワーク</h3>
-          <ul class="tags"><li>Spring Boot</li><li>React</li></ul>
+          <ul class="tags"><li>Spring Boot</li><li>React</li><li>Next.js</li><li>Node.js (Hono)</li></ul>
         </div>
         <div class="card">
           <h3>データベース</h3>
-          <ul class="tags"><li>MySQL</li></ul>
+          <ul class="tags"><li>MySQL</li><li>DynamoDB</li><li>Firestore</li></ul>
+        </div>
+        <div class="card">
+          <h3>クラウド・インフラ</h3>
+          <ul class="tags"><li>AWS (Lambda / Amplify)</li><li>CloudFormation</li><li>Firebase</li></ul>
+        </div>
+        <div class="card">
+          <h3>AI</h3>
+          <ul class="tags"><li>Claude API</li><li>AI チャット</li><li>音声応答</li></ul>
         </div>
       </div>
     </section>

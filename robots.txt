@@ -1,0 +1,5 @@
+# すべての検索エンジンに、サイト全体の巡回を許可する（Disallow を空にすると「禁止なし」の意味）
+User-agent: *
+Disallow:
+
+Sitemap: https://kawano-y.github.io/sitemap.xml
