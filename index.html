@@ -293,8 +293,49 @@
       .work:hover { transform: none; }
     }
 
+    /* ===== 右下の AI 問い合わせ窓口（マドグチ） ===== */
+    /* position: fixed はスクロールしても画面の同じ位置に留まる。z-index で他の要素より手前に出す */
+    .chat-launcher {
+      position: fixed; right: 20px; bottom: 20px; z-index: 1000;
+      display: flex; align-items: center; gap: 8px;
+      padding: 12px 18px; border: none; border-radius: 999px;
+      background: var(--accent); color: #fff; font: inherit; font-weight: 700; font-size: 0.9375rem;
+      box-shadow: 0 6px 20px rgba(37, 99, 235, 0.35); cursor: pointer;
+    }
+    .chat-launcher:hover { background: #1d4ed8; }
+    .chat-launcher svg { width: 20px; height: 20px; flex-shrink: 0; }
+    /* 開いている間はボタンを隠す（パネルの閉じるボタンで戻す） */
+    .chat-launcher[aria-expanded="true"] { display: none; }
+    .chat-panel {
+      position: fixed; right: 20px; bottom: 20px; z-index: 1001;
+      /* min() で「画面が小さいときは画面に収まる大きさ」にする */
+      width: min(400px, calc(100vw - 40px)); height: min(620px, calc(100vh - 40px));
+      display: flex; flex-direction: column;
+      background: var(--bg); border: 1px solid var(--border); border-radius: var(--radius);
+      box-shadow: 0 12px 40px rgba(15, 23, 42, 0.25); overflow: hidden;
+    }
+    /* hidden 属性が付いている間は表示しない（display: flex より優先させるため明示する） */
+    .chat-panel[hidden] { display: none; }
+    .chat-panel-head {
+      display: flex; align-items: center; gap: 8px;
+      padding: 10px 12px 10px 16px; background: var(--accent); color: #fff;
+    }
+    .chat-panel-head .title { font-weight: 700; font-size: 0.9375rem; margin-right: auto; }
+    .chat-panel-head a { color: #fff; font-size: 0.75rem; opacity: 0.9; }
+    .chat-close {
+      width: 32px; height: 32px; border: none; border-radius: 8px;
+      background: transparent; color: #fff; font-size: 1.25rem; line-height: 1; cursor: pointer;
+    }
+    .chat-close:hover { background: rgba(255, 255, 255, 0.15); }
+    .chat-panel-note { margin: 0; padding: 6px 16px; font-size: 0.75rem; color: var(--muted); background: var(--bg-soft); border-bottom: 1px solid var(--border); }
+    /* flex: 1 で、ヘッダーと注意書きを除いた残りの高さをすべて iframe に使う */
+    .chat-panel iframe { flex: 1; width: 100%; border: 0; }
+
     /* ===== スマホ幅での調整 ===== */
     @media (max-width: 480px) {
+      /* スマホでは画面いっぱいに広げる（小さな枠だと文字入力しにくいため） */
+      .chat-panel { right: 0; bottom: 0; width: 100vw; height: 100dvh; border-radius: 0; border: none; }
+      .chat-launcher { right: 16px; bottom: 16px; }
       .site-nav .logo { font-size: 0.875rem; }
       .site-nav ul { gap: 12px; }
       .site-nav ul a { font-size: 0.75rem; }
@@ -449,6 +490,50 @@
       <p class="analytics-note">このサイトではアクセス解析に Google アナリティクスを使用しています。データの収集に Cookie を利用していますが、個人を特定する情報は収集していません。</p>
     </div>
   </footer>
+
+  <!-- 右下の AI 問い合わせ窓口。中身は自作の「マドグチ」（店ID kawano-dev）を iframe で表示する -->
+  <button type="button" class="chat-launcher" id="chat-launcher" aria-expanded="false" aria-controls="chat-panel">
+    <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><path d="M21 15a2 2 0 0 1-2 2H7l-4 4V5a2 2 0 0 1 2-2h14a2 2 0 0 1 2 2z"/></svg>
+    AI に質問する
+  </button>
+  <div class="chat-panel" id="chat-panel" role="dialog" aria-label="AI 問い合わせ窓口" hidden>
+    <div class="chat-panel-head">
+      <span class="title">AI 問い合わせ窓口</span>
+      <a href="https://qzd6svh35aqyqieevivgunbpvy0rogjk.lambda-url.ap-northeast-1.on.aws/?store=kawano-dev" target="_blank" rel="noopener">新しいタブで開く</a>
+      <button type="button" class="chat-close" id="chat-close" aria-label="閉じる">×</button>
+    </div>
+    <p class="chat-panel-note">自作の AI 受付「マドグチ」が答えます。個人情報は入力しないでください。</p>
+    <!-- src は最初に開いたときに入れる（開かない人の分まで読み込まないため）。allow="microphone" で音声入力を使えるようにする -->
+    <iframe id="chat-frame" title="AI 問い合わせ窓口" allow="microphone" data-src="https://qzd6svh35aqyqieevivgunbpvy0rogjk.lambda-url.ap-northeast-1.on.aws/?store=kawano-dev"></iframe>
+  </div>
+
+  <script>
+    // 右下のボタンで AI 問い合わせ窓口を開け閉めする
+    (function () {
+      var launcher = document.getElementById('chat-launcher');
+      var panel = document.getElementById('chat-panel');
+      var frame = document.getElementById('chat-frame');
+      var closeBtn = document.getElementById('chat-close');
+
+      function open() {
+        if (!frame.src) frame.src = frame.getAttribute('data-src');
+        panel.hidden = false;
+        launcher.setAttribute('aria-expanded', 'true');
+        closeBtn.focus();
+      }
+      function close() {
+        panel.hidden = true;
+        launcher.setAttribute('aria-expanded', 'false');
+        launcher.focus();
+      }
+      launcher.addEventListener('click', open);
+      closeBtn.addEventListener('click', close);
+      // Esc キーでも閉じられるようにする
+      document.addEventListener('keydown', function (e) {
+        if (e.key === 'Escape' && !panel.hidden) close();
+      });
+    })();
+  </script>
 
   <script>
     // ターミナルのコマンドを1文字ずつ打つ演出。
